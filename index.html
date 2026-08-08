@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arnav Babel — Portfolio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0F1F3D;
+      --navy-mid: #1A3260;
+      --accent: #2563EB;
+      --accent-light: #EFF4FF;
+      --text: #111827;
+      --text-muted: #6B7280;
+      --border: #E5E7EB;
+      --bg: #FFFFFF;
+      --bg-soft: #F9FAFB;
+      --sidebar-w: 220px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy);
+      color: #fff;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 2.5rem 1.5rem;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-tagline {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2.5rem;
+      line-height: 1.4;
+    }
+
+    .sidebar nav { display: flex; flex-direction: column; gap: 0.25rem; }
+
+    .sidebar nav a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    .sidebar nav a.active {
+      border-left: 2px solid var(--accent);
+      padding-left: calc(0.75rem - 2px);
+    }
+
+    .sidebar-footer { margin-top: auto; display: flex; gap: 0.75rem; }
+
+    .sidebar-footer a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.75rem;
+      transition: color 0.15s;
+    }
+
+    .sidebar-footer a:hover { color: #fff; }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      max-width: 860px;
+      padding: 4rem 3.5rem;
+    }
+
+    section { margin-bottom: 5rem; }
+
+    #hero {
+      padding-top: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .hero-name {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .hero-name span { color: var(--accent); }
+
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background 0.15s;
+    }
+
+    .hero-cta:hover { background: #1d4ed8; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-divider {
+      width: 40px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .projects-grid { display: grid; gap: 1.25rem; }
+
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+    }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .project-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      background: var(--accent-light);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+
+    .tech-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .project-links { display: flex; gap: 0.75rem; }
+
+    .project-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: opacity 0.15s;
+    }
+
+    .project-link:hover { opacity: 0.75; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-group {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .skill-group-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .skill-list li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .skill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .about-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .about-text p + p { margin-top: 1rem; }
+
+    .about-highlights { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-soft);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .highlight-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+
+    .highlight-value {
+      font-size: 0.875rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .contact-card {
+      background: var(--navy);
+      border-radius: 12px;
+      padding: 2.5rem;
+      color: #fff;
+    }
+
+    .contact-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+    .contact-sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .contact-btn.primary { background: var(--accent); color: #fff; }
+    .contact-btn.primary:hover { background: #1d4ed8; }
+
+    .contact-btn.ghost {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .contact-btn.ghost:hover { background: rgba(255,255,255,0.18); }
+
+    .mobile-header {
+      display: none;
+      background: var(--navy);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .mobile-header { display: flex; }
+      .main { margin-left: 0; padding: 2rem 1.25rem; }
+      .hero-name { font-size: 2rem; }
+      .about-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mobile-header">
+  <span style="font-weight:700; font-size:0.95rem;">Arnav Babel</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">Arnav Babel</div>
+    <div class="sidebar-tagline">Full-Stack Developer</div>
+
+    <nav id="sidebar-nav">
+      <a href="#hero" class="active">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="https://github.com/arnavbabel" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/arnavbabel" target="_blank">LinkedIn</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- Hero -->
+    <section id="hero">
+      <p class="hero-eyebrow">Portfolio</p>
+      <h1 class="hero-name">Arnav Babel<br><span>Full-Stack Developer</span></h1>
+      <p class="hero-bio">
+        I'm a full-stack developer with a background in computer science and psychology, 
+        drawn to problems that sit at the intersection of technical complexity and real-world 
+        usability. I'm actively seeking software engineering roles across front-end, back-end, 
+        full-stack, and AI/ML.
+      </p>
+      <a href="#projects" class="hero-cta">View my work ↓</a>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <p class="section-label">Work</p>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-divider"></div>
+
+      <div class="projects-grid">
+
+        <!-- AutoML Generator -->
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-title">AutoML Generator</span>
+            <span class="project-badge">Full Stack</span>
+          </div>
+          <p class="project-desc">
+            A full-stack web app that trains and evaluates machine learning models without writing 
+            code. Supports 8 scikit-learn algorithms across classification and regression, with 
+            AI-generated plain-language interpretation of results.
+          </p>
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">FastAPI</span>
+            <span class="tech-tag">scikit-learn</span>
+            <span class="tech-tag">Groq API</span>
+            <span class="tech-tag">HTML/JS</span>
+          </div>
+          <div class="project-links">
+            <a href="https://arnavbabel.github.io/AutoMLGenerator" target="_blank" class="project-link">Live Demo →</a>
+            <a href="https://github.com/arnavbabel/AutoMLGenerator" target="_blank" class="project-link">GitHub →</a>
+          </div>
+        </div>
+
+        <!-- PantryChef -->
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-title">PantryChef</span>
+            <span class="project-badge">Full Stack</span>
+          </div>
+          <p class="project-desc">
+            A meal suggestion web app that recommends recipes based on pantry ingredients. Features 
+            expiry tracking, dietary filters, macro/micronutrient display, and step-by-step 
+            recipe instructions - all powered by an AI backend.
+          </p>
+          <div class="tech-stack">
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">Express</span>
+            <span class="tech-tag">Groq API</span>
+            <span class="tech-tag">Vanilla JS</span>
+            <span class="tech-tag">HTML/JS</span>
+          </div>
+          <div class="project-links">
+            <a href="https://pantrychef-5nz9.onrender.com/" target="_blank" class="project-link">Live Demo →</a>
+            <a href="https://github.com/arnavbabel/PantryChef" target="_blank" class="project-link">GitHub →</a>
+          </div>
+        </div>
+
+        <!-- Supplier Copilot -->
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-title">Supplier Copilot</span>
+            <span class="project-badge">Data & AI</span>
+          </div>
+          <p class="project-desc">
+            A supplier risk analytics platform that evaluates vendors across 5 risk 
+            factors - delivery, quality, lead time, geographic, and sourcing - using a custom 
+            scoring model. Features concentration risk analysis, an interactive dashboard, 
+            and LLM-powered executive summaries and scenario simulations.
+          </p>
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">Pandas</span>
+            <span class="tech-tag">Streamlit</span>
+            <span class="tech-tag">ChatGPT</span>
+          </div>
+          <div class="project-links">
+            <a href="https://supplylens-ctoxjbxiqzgsqdptvh96zg.streamlit.app/" target="_blank" class="project-link">Live Demo →</a>
+            <a href="https://github.com/arnavbabel/SupplyLens" target="_blank" class="project-link">GitHub →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title">Skills</h2>
+      <div class="section-divider"></div>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-group-title">Languages</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>Python</li>
+            <li><span class="skill-dot"></span>JavaScript</li>
+            <li><span class="skill-dot"></span>Java</li>
+            <li><span class="skill-dot"></span>C / C++</li>
+            <li><span class="skill-dot"></span>SQL</li>
+            <li><span class="skill-dot"></span>HTML / CSS</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Frontend</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>React.js</li>
+            <li><span class="skill-dot"></span>Vanilla JS</li>
+            <li><span class="skill-dot"></span>Bootstrap</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Backend</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>Node.js / Express</li>
+            <li><span class="skill-dot"></span>Spring Boot</li>
+            <li><span class="skill-dot"></span>FastAPI</li>
+            <li><span class="skill-dot"></span>REST APIs</li>
+            <li><span class="skill-dot"></span>PostgreSQL</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Data & AI</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>scikit-learn</li>
+            <li><span class="skill-dot"></span>Pandas</li>
+            <li><span class="skill-dot"></span>Groq API</li>
+            <li><span class="skill-dot"></span>Prompt Engineering</li>
+            <li><span class="skill-dot"></span>LLMs</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Dev Tools</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>Git / GitHub</li>
+            <li><span class="skill-dot"></span>VS Code</li>
+            <li><span class="skill-dot"></span>IntelliJ</li>
+            <li><span class="skill-dot"></span>Claude Code</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <p class="section-label">Background</p>
+      <h2 class="section-title">About me</h2>
+      <div class="section-divider"></div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            I graduated from Arizona State University in May 2026 with a B.S. in Computer Science 
+            and a Minor in Psychology, earning Dean's List honors four times. My experience spans 
+            full-stack web development, ML pipelines, and data analytics - built across internships, 
+            research roles, and personal projects.
+          </p>
+          <p>
+            I'm drawn to work where software solves real, tangible problems - whether that's helping 
+            a researcher validate biological datasets or giving someone a smarter way to plan dinner. 
+            Outside of coding, I've played basketball for over a decade and enjoy listening to music,
+            trying new foods, and traveling.
+          </p>
+        </div>
+        <div class="about-highlights">
+          <div class="highlight-item">
+            <div>
+              <div class="highlight-label">Location</div>
+              <div class="highlight-value">Redmond, WA</div>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <div>
+              <div class="highlight-label">Focus</div>
+              <div class="highlight-value">Full-Stack · AI-assisted development</div>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <div>
+              <div class="highlight-label">Currently learning</div>
+              <div class="highlight-value">Deployment · Cloud hosting</div>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <div>
+              <div class="highlight-label">Open to</div>
+              <div class="highlight-value">Entry Level / New Grad Roles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="contact-card">
+        <h2 class="contact-title">Let's connect!</h2>
+        <p class="contact-sub">Open to opportunities, collaborations, or just a conversation about what you're building.</p>
+        <div class="contact-links">
+          <a href="mailto:arnav.babel@gmail.com" class="contact-btn primary">Email me</a>
+          <a href="https://github.com/arnavbabel" target="_blank" class="contact-btn ghost">GitHub</a>
+          <a href="https://linkedin.com/in/arnavbabel" target="_blank" class="contact-btn ghost">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('#sidebar-nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`#sidebar-nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
